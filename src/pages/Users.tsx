@@ -38,7 +38,7 @@ const Users: React.FC = () => {
     <Box sx={{ height: 400, width: "100%" }}>
       <h2>ユーザー一覧</h2>
       {loading ? (
-        "取得中..."
+        <Box>取得中...</Box>
       ) : (
         <DataGrid
           rows={users}
