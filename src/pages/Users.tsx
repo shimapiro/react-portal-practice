@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { Box, Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Box } from "@mui/material";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 type User = {
   id: number;
@@ -37,7 +38,7 @@ const Users: React.FC = () => {
     <Box sx={{ height: 400, width: "100%" }}>
       <h2>ユーザー一覧</h2>
       {loading ? (
-        "取得中..."
+        <Box>取得中...</Box>
       ) : (
         <DataGrid
           rows={users}
@@ -50,6 +51,10 @@ const Users: React.FC = () => {
           }}
         />
       )}
+
+      <Button variant="outlined" component={Link} to="/" sx={{ mt: 2 }}>
+        ホームに戻る
+      </Button>
     </Box>
   );
 };
