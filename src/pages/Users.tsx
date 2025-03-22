@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { Box, Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Box } from "@mui/material";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 type User = {
   id: number;
@@ -9,12 +10,11 @@ type User = {
   email: string;
 };
 
-const Users: React.FC = () => {
+const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
     axios
       .get("https://jsonplaceholder.typicode.com/users")
       .then((res) => {
@@ -22,7 +22,7 @@ const Users: React.FC = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log("データ取得失敗", err);
+        console.error("データ取得失敗", err);
         setLoading(false);
       });
   }, []);
@@ -37,7 +37,7 @@ const Users: React.FC = () => {
     <Box sx={{ height: 400, width: "100%" }}>
       <h2>ユーザー一覧</h2>
       {loading ? (
-        "取得中..."
+        <Box>取得中...</Box>
       ) : (
         <DataGrid
           rows={users}
@@ -50,6 +50,9 @@ const Users: React.FC = () => {
           }}
         />
       )}
+      <Button variant="outlined" component={Link} to="/" sx={{ mt: 2 }}>
+        ホームに戻る
+      </Button>
     </Box>
   );
 };
