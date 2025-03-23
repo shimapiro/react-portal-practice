@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -34,10 +34,20 @@ const Users = () => {
   ];
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
-      <h2>ユーザー一覧</h2>
+    <Box sx={{ height: "100%", maxWidth: 800, mx: "auto" }}>
+      <Typography variant="h4" mb="20px" textAlign="center">
+        ユーザー一覧
+      </Typography>
       {loading ? (
-        <Box>取得中...</Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          取得中...
+        </Box>
       ) : (
         <DataGrid
           rows={users}
@@ -48,9 +58,15 @@ const Users = () => {
               paginationModel: { pageSize: 5, page: 0 },
             },
           }}
+          sx={{ mb: 2 }}
         />
       )}
-      <Button variant="outlined" component={Link} to="/" sx={{ mt: 2 }}>
+      <Button
+        variant="outlined"
+        component={Link}
+        to="/"
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      >
         ホームに戻る
       </Button>
     </Box>
