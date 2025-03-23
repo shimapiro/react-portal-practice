@@ -1,36 +1,59 @@
+import { Box, Button, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CreateUser = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const navigate = useNavigate();
 
-  const createPost = (e:React.FormEvent) => {
+  const createPost = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("送信",name,email);
+    try {
+      console.log("送信", name, email);
 
-    axios.post("https://jsonplaceholder.typicode.com/users",{name,email})
+      await axios.post("https://jsonplaceholder.typicode.com/users", {
+        name,
+        email,
+      });
+
+      navigate("/users");
+      alert("登録しました");
+    } catch (err) {
+      console.error("送信失敗", err);
+    }
   };
 
   return (
-    <>
-      <form onSubmit={createPost}>
-        <h2>ユーザー登録</h2>
-        <input
-          value={name}
-          type="text"
-          placeholder="名前"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          value={email}
-          type="email"
-          placeholder="メールアドレス"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button>登録</button>
-      </form>
-    </>
+    <Box
+      component="form"
+      onSubmit={createPost}
+      sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+    >
+      <Typography variant="h5" textAlign="center">
+        ユーザー登録
+      </Typography>
+      <TextField
+        value={name}
+        type="text"
+        label="名前"
+        onChange={(e) => setName(e.target.value)}
+        fullWidth
+        required
+      />
+      <TextField
+        value={email}
+        type="email"
+        label="メールアドレス"
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        fullWidth
+      />
+      <Button type="submit" variant="contained" fullWidth>
+        登録
+      </Button>
+    </Box>
   );
 };
 

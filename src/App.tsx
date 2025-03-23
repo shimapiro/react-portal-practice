@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Users from "./pages/Users";
 import "./App.css";
 import UserDetail from "./pages/UserDetail";
+import CreateUser from "./pages/CreateUser";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="users" element={<Users />} />
           <Route path="users/:id" element={<UserDetail />} />
+          <Route path="create" element={<CreateUser />} />
         </Route>
       </Routes>
     </BrowserRouter>
