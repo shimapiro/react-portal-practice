@@ -1,8 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type User = {
   id: number;
@@ -13,6 +13,11 @@ type User = {
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const handleRowClick = (params: GridRowParams) => {
+    navigate(`/users/${params.id}`);
+  };
 
   useEffect(() => {
     axios
@@ -53,6 +58,7 @@ const Users = () => {
           rows={users}
           columns={columns}
           pageSizeOptions={[5]}
+          onRowClick={handleRowClick}
           initialState={{
             pagination: {
               paginationModel: { pageSize: 5, page: 0 },
