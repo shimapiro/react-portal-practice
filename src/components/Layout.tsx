@@ -27,7 +27,7 @@ const Layout = () => {
       </Box>
       <Footer />
     </Box>
-  );
+    );
 };
 
 export default Layout;

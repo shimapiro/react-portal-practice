@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Typography variant="h4" fontWeight="bold" mb={2}>
-        ホームページです
+        ポータルページです
       </Typography>
       <Button variant="contained" component={Link} to="/users">
         ユーザー一覧へ

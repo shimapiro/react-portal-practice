@@ -9,11 +9,14 @@ const Header = () => {
             My React Portal
           </Typography>
           <Button color="inherit" component={Link} to="/">
-            Home
+            ホーム
           </Button>
           <Button color="inherit" component={Link} to="/users">
-            Users
-          </Button>
+            ユーザー一覧
+        </Button>
+        <Button color="inherit" component={Link} to="/create">
+          登録
+        </Button>
         </Toolbar>
       </AppBar>
   );
