@@ -1,27 +1,32 @@
-import { AppBar, Button, Toolbar, Typography } from "@mui/material";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
+import { Box } from "@mui/material";
 
 const Layout = () => {
   return (
-    <>
-      <AppBar>
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            My React Portal
-          </Typography>
-          <Button color="inherit" component={Link} to="/">
-            Home
-          </Button>
-          <Button color="inherit" component={Link} to="/users">
-            Users
-          </Button>
-        </Toolbar>
-      </AppBar>
-
-      <main style={{ padding: "20px" }}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      minHeight="100vh"
+      width="100%"
+      pb="64px"
+    >
+      <Header />
+      <Box
+        component="main"
+        flexGrow={1}
+        p={4}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        {" "}
         <Outlet />
-      </main>
-    </>
+      </Box>
+      <Footer />
+    </Box>
   );
 };
 
