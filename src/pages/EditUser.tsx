@@ -1,37 +1,45 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserById, updateUser } from "../api/userApi";
+import { FormData, validationSchema } from "../utils/validationSchema";
 
 const EditUser = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({ resolver: zodResolver(validationSchema) });
+
   useEffect(() => {
     if (!id) return;
+
     getUserById(id)
       .then((res) => {
-        setName(res.data.name);
-        setEmail(res.data.email);
+        reset({
+          name: res.data.name,
+          email: res.data.email,
+        });
         setLoading(false);
       })
       .catch((err) => {
         console.log("取得失敗", err);
         setLoading(false);
       });
-  }, [id]);
+  }, [id, reset]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (data: FormData) => {
     try {
-      await updateUser(id as string, {
-        name,
-        email,
-      });
+      await updateUser(id as string, data);
       alert("更新しました");
       navigate("/users");
     } catch (err) {
@@ -42,7 +50,7 @@ const EditUser = () => {
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         maxWidth: 400,
         mx: "auto",
@@ -61,15 +69,16 @@ const EditUser = () => {
         <>
           <TextField
             label="名前"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            {...register("name")}
             fullWidth
+            error={!!errors.name}
+            helperText={errors.name?.message}
           />
           <TextField
             label="メールアドレス"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             fullWidth
           />
           <Button variant="contained" type="submit">
