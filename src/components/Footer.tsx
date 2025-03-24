@@ -15,7 +15,7 @@ const Footer = () => {
         zIndex: 1100, // ヘッダーと重ならないように
       }}
     >
-      <Typography variant="body2" color="textSecondary">
+      <Typography variant="body2" color="text.secondary">
         © 2025 My React Portal
       </Typography>
     </Box>

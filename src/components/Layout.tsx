@@ -1,7 +1,9 @@
-import { Outlet } from "react-router-dom";
-import Header from "./Header";
-import Footer from "./Footer";
 import { Box } from "@mui/material";
+import { Outlet } from "react-router-dom";
+import Footer from "./Footer";
+import Header from "./Header";
+
+// 全体レイアウト（ヘッダー・メイン・フッター）
 
 const Layout = () => {
   return (
@@ -27,7 +29,7 @@ const Layout = () => {
       </Box>
       <Footer />
     </Box>
-    );
+  );
 };
 
 export default Layout;

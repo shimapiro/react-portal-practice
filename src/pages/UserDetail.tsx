@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { deleteUser, getUserById } from "../api/userApi";
 
 type User = {
   id: number;
@@ -18,8 +18,7 @@ const UserDetail = () => {
   useEffect(() => {
     if (!id) return;
 
-    axios
-      .get(`https://jsonplaceholder.typicode.com/users/${id}`)
+    getUserById(id)
       .then((res) => {
         setUser(res.data);
         setLoading(false);
@@ -33,7 +32,7 @@ const UserDetail = () => {
   const handleDelete = async () => {
     if (!window.confirm("本当に削除しますか？")) return;
     try {
-      await axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+      await deleteUser(id as string);
       alert("削除しました");
       navigate("/users");
     } catch (err) {

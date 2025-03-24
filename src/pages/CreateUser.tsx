@@ -1,19 +1,19 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createUser } from "../api/userApi";
 
 const CreateUser = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const navigate = useNavigate();
 
-  const createPost = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       console.log("送信", name, email);
 
-      await axios.post("https://jsonplaceholder.typicode.com/users", {
+      await createUser({
         name,
         email,
       });
@@ -28,7 +28,7 @@ const CreateUser = () => {
   return (
     <Box
       component="form"
-      onSubmit={createPost}
+      onSubmit={handleSubmit}
       sx={{ display: "flex", flexDirection: "column", gap: 2 }}
     >
       <Typography variant="h5" textAlign="center">

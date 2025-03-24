@@ -1,8 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getUsers } from "../api/userApi";
 
 type User = {
   id: number;
@@ -20,8 +20,7 @@ const Users = () => {
   };
 
   useEffect(() => {
-    axios
-      .get("https://jsonplaceholder.typicode.com/users")
+    getUsers()
       .then((res) => {
         setUsers(res.data);
         setLoading(false);
