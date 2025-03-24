@@ -46,7 +46,17 @@ const UserDetail = () => {
         <Typography>ユーザーが見つかりません</Typography>
       )}
 
-      <Button variant="outlined" component={Link} to="/users" sx={{mt:3}}>一覧に戻る</Button>
+      <Button variant="outlined" component={Link} to="/users" sx={{ mt: 3 }}>
+        一覧に戻る
+      </Button>
+      <Button
+        variant="outlined"
+        component={Link}
+        to={`/users/${id}/edit`}
+        sx={{ mt: 3, ml: 2 }}
+      >
+        編集
+      </Button>
     </Box>
   );
 };
