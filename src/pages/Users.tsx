@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Box } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getUsers } from "../api/userApi";
 
 type User = {
   id: number;
@@ -9,20 +10,23 @@ type User = {
   email: string;
 };
 
-const Users: React.FC = () => {
+const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const handleRowClick = (params: GridRowParams) => {
+    navigate(`/users/${params.id}`);
+  };
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get("https://jsonplaceholder.typicode.com/users")
+    getUsers()
       .then((res) => {
         setUsers(res.data);
         setLoading(false);
       })
       .catch((err) => {
-        console.log("データ取得失敗", err);
+        console.error("データ取得失敗", err);
         setLoading(false);
       });
   }, []);
@@ -34,22 +38,42 @@ const Users: React.FC = () => {
   ];
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
-      <h2>ユーザー一覧</h2>
+    <Box sx={{ height: "100%", maxWidth: 800, mx: "auto" }}>
+      <Typography variant="h4" mb="20px" textAlign="center">
+        ユーザー一覧
+      </Typography>
       {loading ? (
-        "取得中..."
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          取得中...
+        </Box>
       ) : (
         <DataGrid
           rows={users}
           columns={columns}
           pageSizeOptions={[5]}
+          onRowClick={handleRowClick}
           initialState={{
             pagination: {
               paginationModel: { pageSize: 5, page: 0 },
             },
           }}
+          sx={{ mb: 2 }}
         />
       )}
+      <Button
+        variant="outlined"
+        component={Link}
+        to="/"
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      >
+        ホームに戻る
+      </Button>
     </Box>
   );
 };
