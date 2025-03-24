@@ -2,17 +2,14 @@ import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteUser, getUserById } from "../api/userApi";
+import { User } from "../types/User";
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-};
+
 
 const UserDetail = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const { id } = useParams();
+  const { id } = useParams<{id:string}>();
   const navigate = useNavigate();
 
   useEffect(() => {

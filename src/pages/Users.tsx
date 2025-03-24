@@ -3,12 +3,7 @@ import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUsers } from "../api/userApi";
-
-type User = {
-  id: number;
-  name: string;
-  email: string;
-};
+import { User } from "../types/User";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
