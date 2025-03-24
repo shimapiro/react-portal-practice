@@ -1,7 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { getUserById, updateUser } from "../api/userApi";
 
 const EditUser = () => {
   const [name, setName] = useState("");
@@ -12,8 +12,7 @@ const EditUser = () => {
 
   useEffect(() => {
     if (!id) return;
-    axios
-      .get(`https://jsonplaceholder.typicode.com/users/${id}`)
+    getUserById(id)
       .then((res) => {
         setName(res.data.name);
         setEmail(res.data.email);
@@ -29,7 +28,7 @@ const EditUser = () => {
     e.preventDefault();
 
     try {
-      await axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, {
+      await updateUser(id as string, {
         name,
         email,
       });
