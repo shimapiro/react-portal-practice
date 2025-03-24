@@ -1,22 +1,27 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { createUser } from "../api/userApi";
+import { FormData, validationSchema } from "../utils/validationSchema";
 
 const CreateUser = () => {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      console.log("送信", name, email);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    mode: "onChange",
+    resolver: zodResolver(validationSchema),
+  });
 
-      await createUser({
-        name,
-        email,
-      });
+  const onSubmit = async (data: FormData) => {
+    try {
+      console.log("送信");
+
+      await createUser(data);
 
       navigate("/users");
       alert("登録しました");
@@ -28,27 +33,26 @@ const CreateUser = () => {
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{ display: "flex", flexDirection: "column", gap: 2 }}
     >
       <Typography variant="h5" textAlign="center">
         ユーザー登録
       </Typography>
       <TextField
-        value={name}
-        type="text"
         label="名前"
-        onChange={(e) => setName(e.target.value)}
+        {...register("name")}
         fullWidth
         required
+        helperText={errors.name?.message}
+        error={!!errors.name}
       />
       <TextField
-        value={email}
-        type="email"
+        {...register("email")}
         label="メールアドレス"
-        onChange={(e) => setEmail(e.target.value)}
-        required
         fullWidth
+        helperText={errors.email?.message}
+        error={!!errors.email}
       />
       <Button type="submit" variant="contained" fullWidth>
         登録
