@@ -1,23 +1,23 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Snackbar, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserById, updateUser } from "../api/userApi";
+import FormInput from "../components/FormInput";
 import { FormData, validationSchema } from "../utils/validationSchema";
 
 const EditUser = () => {
-  // const [name, setName] = useState("");
-  // const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<FormData>({ resolver: zodResolver(validationSchema) });
 
   useEffect(() => {
@@ -40,8 +40,11 @@ const EditUser = () => {
   const onSubmit = async (data: FormData) => {
     try {
       await updateUser(id as string, data);
-      alert("更新しました");
-      navigate("/users");
+      setOpenSnackbar(true);
+
+      setTimeout(() => {
+        navigate("/users");
+      }, 1500);
     } catch (err) {
       console.log("更新失敗", err);
     }
@@ -67,23 +70,33 @@ const EditUser = () => {
         <Typography textAlign="center">取得中...</Typography>
       ) : (
         <>
-          <TextField
+          <FormInput
+            name="name"
             label="名前"
-            {...register("name")}
-            fullWidth
-            error={!!errors.name}
-            helperText={errors.name?.message}
+            register={register}
+            errors={errors}
           />
-          <TextField
+          <FormInput
+            name="email"
             label="メールアドレス"
-            {...register("email")}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-            fullWidth
+            register={register}
+            errors={errors}
           />
-          <Button variant="contained" type="submit">
-            更新
+
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={!isValid || isSubmitting}
+          >
+            {isSubmitting ? "送信中..." : "更新"}
           </Button>
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={3000}
+            onClose={() => setOpenSnackbar(false)}
+            message="更新しました"
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          />
         </>
       )}
     </Box>
