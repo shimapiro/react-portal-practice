@@ -4,9 +4,9 @@ import Layout from "./components/Layout";
 import CreateUser from "./pages/CreateUser";
 import EditUser from "./pages/EditUser";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 import UserDetail from "./pages/UserDetail";
 import Users from "./pages/Users";
-import Login from "./pages/Login";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
           <Route path="users/:id" element={<UserDetail />} />
           <Route path="users/create" element={<CreateUser />} />
           <Route path="users/:id/edit" element={<EditUser />} />
-          <Route path="login" element={<Login/>}/>
+          <Route path="login" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>
