@@ -17,7 +17,7 @@ const EditUser = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<FormData>({ resolver: zodResolver(validationSchema) });
 
   useEffect(() => {
@@ -81,8 +81,12 @@ const EditUser = () => {
             helperText={errors.email?.message}
             fullWidth
           />
-          <Button variant="contained" type="submit">
-            更新
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={!isValid || isSubmitting}
+          >
+            {isSubmitting ? "送信中..." : "更新"}
           </Button>
         </>
       )}

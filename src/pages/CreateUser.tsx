@@ -11,7 +11,7 @@ const CreateUser = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<FormData>({
     mode: "onChange",
     resolver: zodResolver(validationSchema),
@@ -54,8 +54,13 @@ const CreateUser = () => {
         helperText={errors.email?.message}
         error={!!errors.email}
       />
-      <Button type="submit" variant="contained" fullWidth>
-        登録
+      <Button
+        type="submit"
+        variant="contained"
+        fullWidth
+        disabled={!isValid || isSubmitting}
+      >
+        {isSubmitting ? "送信中..." : "登録"}
       </Button>
     </Box>
   );
