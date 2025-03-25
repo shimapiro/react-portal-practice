@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Snackbar, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { createUser } from "../api/userApi";
@@ -7,6 +8,7 @@ import { FormData, validationSchema } from "../utils/validationSchema";
 
 const CreateUser = () => {
   const navigate = useNavigate();
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const {
     register,
@@ -22,9 +24,13 @@ const CreateUser = () => {
       console.log("送信");
 
       await createUser(data);
+      setOpenSnackbar(true);
 
-      navigate("/users");
-      alert("登録しました");
+      setTimeout(() => {
+        navigate("/users");
+      }, 1500);
+
+      // alert("登録しました");
     } catch (err) {
       console.error("送信失敗", err);
     }
@@ -62,6 +68,14 @@ const CreateUser = () => {
       >
         {isSubmitting ? "送信中..." : "登録"}
       </Button>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+        message="登録しました"
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      />
     </Box>
   );
 };

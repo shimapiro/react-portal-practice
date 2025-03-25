@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Snackbar, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,11 +7,10 @@ import { getUserById, updateUser } from "../api/userApi";
 import { FormData, validationSchema } from "../utils/validationSchema";
 
 const EditUser = () => {
-  // const [name, setName] = useState("");
-  // const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const {
     register,
@@ -40,8 +39,11 @@ const EditUser = () => {
   const onSubmit = async (data: FormData) => {
     try {
       await updateUser(id as string, data);
-      alert("更新しました");
-      navigate("/users");
+      setOpenSnackbar(true);
+
+      setTimeout(() => {
+        navigate("/users");
+      }, 1500);
     } catch (err) {
       console.log("更新失敗", err);
     }
@@ -88,6 +90,13 @@ const EditUser = () => {
           >
             {isSubmitting ? "送信中..." : "更新"}
           </Button>
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={3000}
+            onClose={() => setOpenSnackbar(false)}
+            message="更新しました"
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          />
         </>
       )}
     </Box>
