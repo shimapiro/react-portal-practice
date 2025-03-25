@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Snackbar, TextField, Typography } from "@mui/material";
+import { Box, Button, Snackbar, Typography } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { createUser } from "../api/userApi";
+import FormInput from "../components/FormInput";
 import { FormData, validationSchema } from "../utils/validationSchema";
 
 const CreateUser = () => {
@@ -45,21 +46,16 @@ const CreateUser = () => {
       <Typography variant="h5" textAlign="center">
         ユーザー登録
       </Typography>
-      <TextField
-        label="名前"
-        {...register("name")}
-        fullWidth
-        required
-        helperText={errors.name?.message}
-        error={!!errors.name}
-      />
-      <TextField
-        {...register("email")}
+
+      <FormInput label="名前" name="name" register={register} errors={errors} />
+
+      <FormInput
         label="メールアドレス"
-        fullWidth
-        helperText={errors.email?.message}
-        error={!!errors.email}
+        name="email"
+        register={register}
+        errors={errors}
       />
+
       <Button
         type="submit"
         variant="contained"

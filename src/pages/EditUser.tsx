@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Snackbar, TextField, Typography } from "@mui/material";
+import { Box, Button, Snackbar, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserById, updateUser } from "../api/userApi";
+import FormInput from "../components/FormInput";
 import { FormData, validationSchema } from "../utils/validationSchema";
 
 const EditUser = () => {
@@ -69,20 +70,19 @@ const EditUser = () => {
         <Typography textAlign="center">取得中...</Typography>
       ) : (
         <>
-          <TextField
+          <FormInput
+            name="name"
             label="名前"
-            {...register("name")}
-            fullWidth
-            error={!!errors.name}
-            helperText={errors.name?.message}
+            register={register}
+            errors={errors}
           />
-          <TextField
+          <FormInput
+            name="email"
             label="メールアドレス"
-            {...register("email")}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-            fullWidth
+            register={register}
+            errors={errors}
           />
+
           <Button
             variant="contained"
             type="submit"
