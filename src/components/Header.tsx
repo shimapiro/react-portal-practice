@@ -17,6 +17,9 @@ const Header = () => {
         <Button color="inherit" component={Link} to="/users/create">
           登録
         </Button>
+        <Button color="inherit" component={Link} to="/login">
+          ログイン
+        </Button>
       </Toolbar>
     </AppBar>
   );
